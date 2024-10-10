@@ -65,13 +65,15 @@ costs
 
 !pip install wget
 import wget
-wget.download("https://github.com/GrandmaCan/ML/raw/main/Resgression/ChineseFont.ttf")
+wget.download("https://github.com/zxc83118/-save/blob/main/ChineseFont.ttf")
 
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 from matplotlib.font_manager import fontManager
 fontManager.addfont("ChineseFont.ttf")
 mpl.rc('font', family="ChineseFont")
+
+plt.figure(figsize=(7 ,7)) #調整畫出的圖的大小
 
 ax = plt.axes(projection="3d")
 ax.view_init(45 ,-120) #上下選轉角度 左右旋轉角度
@@ -80,10 +82,15 @@ ax.yaxis.set_pane_color((0,0,0))
 ax.zaxis.set_pane_color((0,0,0))
 b_grid ,w_grid = np.meshgrid(bs ,ws)
 ax.plot_surface(w_grid ,b_grid ,costs ,cmap="Spectral_r" ,alpha = 0.7) #cmap調整匯出的曲線的顏色,alpha使圖面變為透明
+ax.plot_wireframe(w_grid ,b_grid ,costs ,color="black" ,alpha = 0.1) #加一個邊框設定為黑色
 
 ax.set_title("w b 對應的 cost")
 ax.set_xlabel("w")
 ax.set_ylabel("b")
 ax.set_zlabel("cost")
 
+w_index ,b_index = np.where(costs == np.min(costs)) #找出最低的cost
+ax.scatter(ws[w_index] ,bs[b_index] ,costs[w_index ,b_index] ,color="red" ,s=40) #畫出最小cost的點(修改顏色和大小)
+
 plt.show()
+print(f"當w={ws[w_index]} ,b={bs[b_index]} 會有最小cost:{costs[w_index ,b_index]}") #找出最低cost的w和b的值
